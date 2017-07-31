@@ -26,6 +26,8 @@ ToDo
 Set docker directory for images
 eg /home/e-smith/files/docker
 
+DOCKER_CERT_PATH
+
 Startup scripts for images - configs can be pulled form a docker DB
 
 so you could do kind of

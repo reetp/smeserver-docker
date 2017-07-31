@@ -4,4 +4,27 @@
 # These will be parsed by the sysv initscript and appended
 # to the arguments list passed to docker -d
 
+
+Some notes:
+
+# -d 	run in detached mode (like running a process in the background)
+# -p 3000:3000 	map port 3000 from container to host port 3000, this is the port our app listens on
+# -v $(PWD):/src 	mount the current directory which is expanded from $(PWD) as the /src folder in the container 
+
 other_args="-g /home/e-smith/files/docker -H unix:///var/run/docker.sock"
+
+# This will need setting most likely
+# DOCKER_CERT_PATH=/etc/docker
+
+Have seen some stuff like this
+#if [ -z "${DOCKER_CERT_PATH}" ]; then
+#    DOCKER_CERT_PATH=/etc/docker
+#fi
+
+# Resolves: rhbz#1176302 (docker issue #407)
+DOCKER_NOWARN_KERNEL_VERSION=1
+
+# Location used for temporary files, such as those created by
+# # docker load and build operations. Default is /var/lib/docker/tmp
+# # Can be overriden by setting the following environment variable.
+# # DOCKER_TMPDIR=/var/tmp

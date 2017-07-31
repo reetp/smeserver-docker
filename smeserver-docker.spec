@@ -17,6 +17,7 @@ BuildArchitectures: noarch
 BuildRequires: e-smith-devtools
 Requires:  e-smith-release >= 9.0
 Requires:  mod_proxy_wstunnel >= 0.1
+Required:  docker-io >= 1.7.0
 AutoReqProv: no
 
 %description
