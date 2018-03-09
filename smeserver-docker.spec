@@ -1,7 +1,7 @@
 %define name smeserver-docker
 %define version 0.1
 %define release 1
-Summary: Plugin to enable IPSEC connections
+Summary: Contrib to manage basic docker setup
 Name: %{name}
 Version: %{version}
 Release: %{release}%{?dist}
@@ -15,7 +15,7 @@ Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-%{version}
 BuildArchitectures: noarch
 BuildRequires: e-smith-devtools
-Requires:  e-smith-release >= 9.0
+Requires:  e-smith-release >= 9.2
 Requires:  mod_proxy_wstunnel >= 0.1
 Required:  docker-io >= 1.7.0
 AutoReqProv: no
@@ -28,6 +28,7 @@ Docker is an open-source project that automates the deployment of applications i
 * Sun Jul 30 2017 John Crisp <jcrisp@safeandsoundit.co.uk> 0.1-1
 - initial release
 - basic file layout
+- removed httpd templates - need to create your own
 
 %prep
 %setup
@@ -56,14 +57,20 @@ rm -rf %{name}-%{version}
 %preun
 %post
 
-/sbin/e-smith/expand-template /etc/rc.d/init.d/masq
-/sbin/e-smith/expand-template /etc/inittab
-/sbin/init q
+if [[ ! -d /home/e-smith/files/docker ]]; then
+mkdir -p /home/e-smith/files/docker;
+mkdir -p /home/e-smith/files/docker/configs;
+fi
+
+
+#/sbin/e-smith/expand-template /etc/rc.d/init.d/masq
+#/sbin/e-smith/expand-template /etc/inittab
+#/sbin/init q
 
 
 echo "see https://wiki.contribs.org/Docker"
 
 %postun
-/sbin/e-smith/expand-template /etc/rc.d/init.d/masq
-/sbin/e-smith/expand-template /etc/inittab
-/sbin/init q
+#/sbin/e-smith/expand-template /etc/rc.d/init.d/masq
+#/sbin/e-smith/expand-template /etc/inittab
+#/sbin/init q

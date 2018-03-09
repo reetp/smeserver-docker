@@ -11,13 +11,18 @@ That means you will need CentOS 7  /SME v10 and as I have a particularly aversio
 
 So this remains here as a set of notes and ideas.
 
-Much easier with docker-compose installed
+The docker-io package creates the user and group 'dockerroot'
 
-Needs:
+These can be used in docker-compose or elsewhere if required.
 
-mkdir -p /home/e-smith/files/docker
 
-I tried making a configs directory in there to store .env, `*.yml and start_stop scripts
+Docker is easier to manage with docker-compose installed
+
+I have added that to the contrib rpm
+
+/home/e-smith/files/docker/configs
+
+I made a configs directory in there to store .env, `*.yml and start_stop scripts
 
 Startup scripts for images - configs can be pulled from a docker DB
 
@@ -66,10 +71,12 @@ ProxyPassTarget=http://127.0.0.1:3000/
 
 
 
-docker-compose
+docker-compose (added by contrib)
+
+Highest version of docker-compose that will match CentOS 6 docker 1.7.1 is v.1.5.2
 
 $dockerComposeVersion
 
 curl -L https://github.com/docker/compose/releases/download/$dockerComposeVersion/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 
-curl -L https://github.com/docker/compose/releases/download/1.15.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose

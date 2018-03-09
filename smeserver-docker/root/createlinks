@@ -31,7 +31,7 @@ service_link_enhanced("ipsec", "K21", "1");
 # Not sure what dcker logs to normally so guessing here
 
 foreach (qw(
-    /var/log/docket/docker.log
+    /var/log/docker/docker.log
     ))
 {
     safe_touch "root/etc/e-smith/events/logrotate/logfiles2timestamp/$_";
