@@ -57,10 +57,11 @@ rm -rf %{name}-%{version}
 %preun
 %post
 
-if [[ ! -d /home/e-smith/files/docker ]]; then
-mkdir -p /home/e-smith/files/docker;
-mkdir -p /home/e-smith/files/docker/configs;
-fi
+# Included sample compose file
+#if [[ ! -d /home/e-smith/files/docker ]]; then
+#mkdir -p /home/e-smith/files/docker;
+#mkdir -p /home/e-smith/files/docker/configs;
+#fi
 
 
 #/sbin/e-smith/expand-template /etc/rc.d/init.d/masq
