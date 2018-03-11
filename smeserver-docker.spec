@@ -1,12 +1,12 @@
 %define name smeserver-docker
 %define version 0.1
-%define release 1
+%define release 2
 Summary: Contrib to manage basic docker setup
 Name: %{name}
 Version: %{version}
 Release: %{release}%{?dist}
 License: GNU GPL version 2
-URL: http://libreswan.org/
+URL: http://www.docker.com/
 Group: SMEserver/addon
 Source: %{name}-%{version}.tar.gz
 # Patch1: smeserver-docker-xxxx.patch
@@ -25,7 +25,11 @@ Docker is an open-source project that automates the deployment of applications i
 
 %changelog
 
-* Sun Jul 30 2017 John Crisp <jcrisp@safeandsoundit.co.uk> 0.1-1
+* Sun Mar 11 2018 John Crisp <jcrisp@safeandsoundit.co.uk> 0.1-2
+- update spec file to set props on docker-compose
+- mover docker-compose to /usr/bin
+
+* Sun Mar 4 2018 John Crisp <jcrisp@safeandsoundit.co.uk> 0.1-1
 - initial release
 - basic file layout
 - removed httpd templates - need to create your own
@@ -42,7 +46,9 @@ perl createlinks
 rm -rf $RPM_BUILD_ROOT
 (cd root ; find . -depth -print | cpio -dump $RPM_BUILD_ROOT)
 rm -f %{name}-%{version}-filelist
-/sbin/e-smith/genfilelist $RPM_BUILD_ROOT > %{name}-%{version}-filelist
+/sbin/e-smith/genfilelist $RPM_BUILD_ROOT \
+--file /usr/bin/docker-compose 'attr(4750,root,root)' \
+> %{name}-%{version}-filelist
 echo "%doc COPYING" >> %{name}-%{version}-filelist
 
 

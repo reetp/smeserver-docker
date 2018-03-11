@@ -29,5 +29,6 @@ rocketchat:
     - /opt/uploads:/opt/uploads
     - /opt/hubot-scripts/src/scripts/:/opt/hubot-scripts/src/scripts/
     restart: on-failure:2
+    # Might need the UID/GID rather than name
     user: dockerroot:dockerroot
     mem_limit: 256MB
