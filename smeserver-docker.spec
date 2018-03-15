@@ -1,6 +1,6 @@
 %define name smeserver-docker
 %define version 0.1
-%define release 2
+%define release 3
 Summary: Contrib to manage basic docker setup
 Name: %{name}
 Version: %{version}
@@ -24,6 +24,8 @@ AutoReqProv: no
 Docker is an open-source project that automates the deployment of applications inside software containers
 
 %changelog
+* Thu Mar 15 2018 John Crisp <jcrisp@safeandsoundit.co.uk> 0.1-3
+- add rc.7 service links for docker and mongod
 
 * Sun Mar 11 2018 John Crisp <jcrisp@safeandsoundit.co.uk> 0.1-2
 - update spec file to set props on docker-compose
