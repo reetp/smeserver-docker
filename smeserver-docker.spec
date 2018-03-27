@@ -68,10 +68,9 @@ rm -rf %{name}-%{version}
 %preun
 %post
 
-# Included sample compose file
-#if [[ ! -d /home/e-smith/files/docker ]]; then
-#mkdir -p /home/e-smith/files/docker;
-#mkdir -p /home/e-smith/files/docker/configs;
+# Add configs directory if it doesn't exist
+if [[ ! -d /home/e-smith/files/docker/configs ]]; then
+mkdir -p /home/e-smith/files/docker/configs;
 #fi
 
 
