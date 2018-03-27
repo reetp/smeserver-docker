@@ -1,6 +1,6 @@
 %define name smeserver-docker
 %define version 0.1
-%define release 3
+%define release 4
 Summary: Contrib to manage basic docker setup
 Name: %{name}
 Version: %{version}
@@ -24,6 +24,9 @@ AutoReqProv: no
 Docker is an open-source project that automates the deployment of applications inside software containers
 
 %changelog
+* Tue Mar 27 2018 John Crisp <jcrisp@safeandsoundit.co.uk> 0.1-4
+- Missed a # in the spec file
+
 * Thu Mar 15 2018 John Crisp <jcrisp@safeandsoundit.co.uk> 0.1-3
 - add rc.7 service links for docker and mongod
 - Fix prelink error on docker-compose see https://github.com/docker/compose/issues/
