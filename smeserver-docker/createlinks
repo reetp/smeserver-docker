@@ -10,7 +10,7 @@ my $event = "docker-update";
 foreach (qw(
        /etc/sysconfig/docker
        /etc/sysconfig/docker-storage
-    ));
+    ))
 
 {
     templates2events("$_", qw(

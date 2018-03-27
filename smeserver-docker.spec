@@ -26,7 +26,8 @@ Docker is an open-source project that automates the deployment of applications i
 %changelog
 * Thu Mar 15 2018 John Crisp <jcrisp@safeandsoundit.co.uk> 0.1-3
 - add rc.7 service links for docker and mongod
-- Fix prelink error on docker-compose see https://github.com/docker/compose/issues/1135
+- Fix prelink error on docker-compose see https://github.com/docker/compose/issues/
+- fix errant semi colon in createlinks
 
 * Sun Mar 11 2018 John Crisp <jcrisp@safeandsoundit.co.uk> 0.1-2
 - update spec file to set props on docker-compose
