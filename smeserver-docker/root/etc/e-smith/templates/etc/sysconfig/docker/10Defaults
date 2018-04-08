@@ -18,7 +18,7 @@ other_args="-g /home/e-smith/files/docker -H unix:///var/run/docker.sock"
 # This will need setting most likely
 # DOCKER_CERT_PATH=/etc/docker
 
-Have seen some stuff like this
+# Have seen some stuff like this
 #if [ -z "${DOCKER_CERT_PATH}" ]; then
 #    DOCKER_CERT_PATH=/etc/docker
 #fi
