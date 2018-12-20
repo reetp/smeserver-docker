@@ -1,10 +1,10 @@
 %define name smeserver-docker
-%define version 0.1
-%define release 5
+%define version 0.2
+%define release 2
 Summary: Contrib to manage basic docker setup
 Name: %{name}
 Version: %{version}
-Release: %{release}%{?dist}
+Release: %{release}
 License: GNU GPL version 2
 URL: http://www.docker.com/
 Group: SMEserver/addon
@@ -16,7 +16,6 @@ BuildRoot: /var/tmp/%{name}-%{version}
 BuildArchitectures: noarch
 BuildRequires: e-smith-devtools
 Requires:  e-smith-release >= 9.2
-Requires:  mod_proxy_wstunnel >= 0.1
 Requires:  docker-io >= 1.7.1
 AutoReqProv: no
 
@@ -24,6 +23,16 @@ AutoReqProv: no
 Docker is an open-source project that automates the deployment of applications inside software containers
 
 %changelog
+* Thu Dec 20 2018 John Crisp <jcrisp@safeandsoundit.co.uk> 0.2-2
+- Templating for docker-compose.yml
+- docker-update action to expand files - needs actions as well later
+- add network and subnet keys
+- add masq template fragment to allo wlocal access in bridge mode
+
+* Fri Aug 17 2018 John Crisp <jcrisp@safeandsoundit.co.uk> 0.2-1
+- Add template directory for docker-compose.yml
+- You can then add templates from your own contrib
+
 * Sun Apr 08 2018 John Crisp <jcrisp@safeandsoundit.co.uk> 0.1-5
 - Missed a # in /etc/sysconfig/docker
 
@@ -79,15 +88,8 @@ if [[ ! -d /home/e-smith/files/docker/configs ]]; then
 mkdir -p /home/e-smith/files/docker/configs;
 fi
 
-
-#/sbin/e-smith/expand-template /etc/rc.d/init.d/masq
-#/sbin/e-smith/expand-template /etc/inittab
-#/sbin/init q
-
-
 echo "see https://wiki.contribs.org/Docker"
+echo "Note that docker is not daemonised so config docker status has no effect"
+echo "
 
 %postun
-#/sbin/e-smith/expand-template /etc/rc.d/init.d/masq
-#/sbin/e-smith/expand-template /etc/inittab
-#/sbin/init q

@@ -1,0 +1,23 @@
+{
+    $OUT = "";
+    my $config = esmith::ConfigDB->open_ro or die ("can't open Config DB");
+    my $net = $config->get_prop('docker', 'network') || 'no net';
+    my $sub = $config->get_prop('docker', 'mask') || 'no sub';
+    my $local = "$net/$sub";
+
+    # For testing
+    print "Help N $net S $sub L $local \n";
+
+    # If the the docker network is set then  restrict it to the docker0
+    # interface for local access
+
+    if (($config->get_prop('docker', 'status') || 'disabled') eq 'enabled')
+    {
+        # For testing
+        print "Here \n";
+
+        $OUT .= "/sbin/iptables -A \$NEW_local_chk -s $local";
+        $OUT .= " --in-interface docker0";
+        $OUT .= " -j ACCEPT\n";
+    }
+}
