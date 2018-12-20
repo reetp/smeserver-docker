@@ -1,6 +1,6 @@
 %define name smeserver-docker
 %define version 0.2
-%define release 2
+%define release 3
 Summary: Contrib to manage basic docker setup
 Name: %{name}
 Version: %{version}
@@ -23,6 +23,9 @@ AutoReqProv: no
 Docker is an open-source project that automates the deployment of applications inside software containers
 
 %changelog
+* Thu Dec 20 2018 John Crisp <jcrisp@safeandsoundit.co.uk> 0.2-3
+- Fix error in spec file
+
 * Thu Dec 20 2018 John Crisp <jcrisp@safeandsoundit.co.uk> 0.2-2
 - Templating for docker-compose.yml
 - docker-update action to expand files - needs actions as well later
@@ -88,8 +91,9 @@ if [[ ! -d /home/e-smith/files/docker/configs ]]; then
 mkdir -p /home/e-smith/files/docker/configs;
 fi
 
+echo "========================================================================"
 echo "see https://wiki.contribs.org/Docker"
 echo "Note that docker is not daemonised so config docker status has no effect"
-echo "
+echo "========================================================================"
 
 %postun
