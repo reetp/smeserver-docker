@@ -1,4 +1,4 @@
-# docker-upodate.pl is in the CIDR directory / repo
+# docker-uppdate.pl is in the CIDR directory / repo
 
 # /etc/sysconfig/docker
 #
@@ -9,33 +9,123 @@
     use strict;
     use warnings;
     use esmith::ConfigDB;
-    my $configDB = esmith::ConfigDB->open or die("can't open Config DB");
+    use esmith::NetworksDB;
+    use Net::CIDR ':all';
+    use Net::CIDR::Compare;
+    use Net::Netmask;
+
+    my $configDB  = esmith::ConfigDB->open             or die("can't open Config DB");
     my $networkDB = esmith::ConfigDB->open('networks') or die("Docker Error - cant connect to networks database");
-    
+
     #my $network = $networkDB->get_prop( $network, 'SystemLocalNetwork' ) || 'no';
     #my $dockernet = $configDB -> get_prop ('', "Network");
-    
-    my @networks = $networkDB->keys;
-    
-    foreach my $network (@networks) {
-        my $dockernet = $network -> get_prop ($network, "Docker");
+
+    if ( ( $config->get_prop( 'docker', 'status' ) || 'disabled' ) eq 'enabled' ) {
+
+        #    my @networks = $networkDB->keys;
+
+        #    foreach my $network (@networks) {
+        #        my $dockernet = $network -> get_prop ($network, "Docker");
+        #    }
+
+        # Get the docker network settings
+        # Set to an address if they don't exist and check it isn't used already
+        # It should get caught in the network check later
+
+        my $dockerNet = $configDB->get_prop( 'docker', 'network' ) || '172.16.0.0';
+        my $dockerSub = $configDB->get_prop( 'docker', 'mask' )    || '24';
+        
+        # Check the mask length in case it is not in CIDR format
+        
+        my $maskCheck = length($dockerSub);
+        if ( $maskCheck > 2 || $dockerSub > 32 || $dockerSub < 4 ) {
+            die "Please check your docker mask is in CIDR notation and between 4 and 32\n";
+        }
+        
+        # Set the address like 172.16.0.0/24"
+        
+        my $dockerCIDR = "$dockerNet/$dockerSub";
+
+        my $result = networkLookup($dockerCIDR);
+
+        if ($result) {
+
+            # Case when there is some overlap
+            $OUT .= "Exiting due to network overlap\n";
+            print "Exiting due to network overlap\n";
+        }
+        else {
+            # Case when there is no overlap
+            # Need to set it Docker enabled
+            $networksDB->set_prop( $dockerNet, Docker => 'enabled' );
+
+            $OUT .= "other_args = \"-g /home/e-smith/files/docker -H unix:///var/run/docker.sock --bip=$local";
+            $OUT .= "# Resolves: rhbz#1176302 (docker issue #407)\n";
+            $OUT .= "DOCKER_NOWARN_KERNEL_VERSION=1\n";
+        }
     }
-    
-            
-    other_args="-g /home/e-smith/files/docker -H unix:///var/run/docker.sock --bip=172.10.1.0/20"
-    
-    $OUT .= "# Resolves: rhbz#1176302 (docker issue #407)\n";
-    $OUT .= "DOCKER_NOWARN_KERNEL_VERSION=1\n";
+    else {
+        $OUT .= "Docker is disabled\n";
+    }
+
+    sub networkLookup {
+
+        my $netCheck = shift;
+
+        # Get all the network connections into an array
+        my @connections = $networksDB->keys;
+
+        # Init an  array for the connections
+        my @cidr_list;
+
+        # Cycle the connections and add them to the array for checking
+        foreach my $networksprop (@connections) {
+            my $net = $networksDB->get_prop( "$networksprop", "Network" );
+            my $sub = $networksDB->get_prop( "$networksprop", "Mask" );
+
+            # Is it a valid address and change it to CIDR format
+            my $address = Net::CIDR::addrandmask2cidr( $networksprop, $sub ) || "Empty";
+
+            print( "Network key ", "$networksprop ", "$sub ", "CIDR ", $address, "\n" );
+
+            # Add it to the CIDR list unless it is empty
+            unless ( $address eq 'Empty' ) {
+                @cidr_list = Net::CIDR::cidradd( $address, @cidr_list );
+            }
+
+        }
+
+        # Is docker address in network address range
+        my $found = Net::CIDR::cidrlookup( $netCheck, @cidr_list );
+
+        if ($found) {
+            print "Found ", $netCheck, " in existing networks. Check your docker network/mask!!\n
+                Either modify your existing network or your docker network setting\n";
+        }
+
+        return $found;
+    }
+
+    sub validateNetwork {
+        my $network = shift;
+
+        # validate a network address
+        my $netCheck = Net::CIDR::cidrvalidate($network);
+        return $netCheck;
+    }
+
 }
+
 # This will need setting most likely
 # DOCKER_CERT_PATH=/etc/docker
 
 Have seen some stuff like this
-#if [ -z "${DOCKER_CERT_PATH}" ]; then
-#    DOCKER_CERT_PATH=/etc/docker
-#fi
 
-# Location used for temporary files, such as those created by
-# # docker load and build operations. Default is /var/lib/docker/tmp
-# # Can be overriden by setting the following environment variable.
-# # DOCKER_TMPDIR=/var/tmp
+    #if [ -z "${DOCKER_CERT_PATH}" ]; then
+    #    DOCKER_CERT_PATH=/etc/docker
+    #fi
+
+    # Location used for temporary files, such as those created by
+    # # docker load and build operations. Default is /var/lib/docker/tmp
+    # # Can be overriden by setting the following environment variable.
+    # # DOCKER_TMPDIR=/var/tmp

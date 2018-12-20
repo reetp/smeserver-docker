@@ -17,6 +17,8 @@ BuildArchitectures: noarch
 BuildRequires: e-smith-devtools
 Requires:  e-smith-release >= 9.2
 Requires:  docker-io >= 1.7.1
+Requires:  perl-Net-CIDR-Compare
+
 AutoReqProv: no
 
 %description
@@ -25,6 +27,8 @@ Docker is an open-source project that automates the deployment of applications i
 %changelog
 * Thu Dec 20 2018 John Crisp <jcrisp@safeandsoundit.co.uk> 0.2-3
 - Fix error in spec file
+- Upgrade the sysconfig file for network checks
+- Add requires for network checks
 
 * Thu Dec 20 2018 John Crisp <jcrisp@safeandsoundit.co.uk> 0.2-2
 - Templating for docker-compose.yml
