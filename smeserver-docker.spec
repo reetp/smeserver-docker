@@ -25,7 +25,7 @@ AutoReqProv: no
 Docker is an open-source project that automates the deployment of applications inside software containers
 
 %changelog
-* Thu Dec 20 2018 John Crisp <jcrisp@safeandsoundit.co.uk> 0.2-3
+* Fri Dec 21 2018 John Crisp <jcrisp@safeandsoundit.co.uk> 0.2-3
 - Fix error in spec file
 - Upgrade the sysconfig file for network checks
 - Add requires for network checks
@@ -34,7 +34,7 @@ Docker is an open-source project that automates the deployment of applications i
 - Templating for docker-compose.yml
 - docker-update action to expand files - needs actions as well later
 - add network and subnet keys
-- add masq template fragment to allo wlocal access in bridge mode
+- add masq template fragment to allow local access in bridge mode
 
 * Fri Aug 17 2018 John Crisp <jcrisp@safeandsoundit.co.uk> 0.2-1
 - Add template directory for docker-compose.yml
