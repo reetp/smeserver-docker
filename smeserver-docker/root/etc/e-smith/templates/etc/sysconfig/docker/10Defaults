@@ -1,4 +1,5 @@
-# docker-uppdate.pl is in the CIDR directory / repo
+# Note to self
+# docker-update.pl is in the CIDR directory / repo
 
 # /etc/sysconfig/docker
 #
@@ -15,12 +16,12 @@
     use Net::Netmask;
 
     my $configDB  = esmith::ConfigDB->open             or die("can't open Config DB");
-    my $networkDB = esmith::ConfigDB->open('networks') or die("Docker Error - cant connect to networks database");
+    my $networksDB = esmith::ConfigDB->open('networks') or die("Docker Error - cant connect to networks database");
 
     #my $network = $networkDB->get_prop( $network, 'SystemLocalNetwork' ) || 'no';
     #my $dockernet = $configDB -> get_prop ('', "Network");
 
-    if ( ( $config->get_prop( 'docker', 'status' ) || 'disabled' ) eq 'enabled' ) {
+    if ( ( $configDB->get_prop( 'docker', 'status' ) || 'disabled' ) eq 'enabled' ) {
 
         #    my @networks = $networkDB->keys;
 
@@ -59,7 +60,7 @@
             # Need to set it Docker enabled
             $networksDB->set_prop( $dockerNet, Docker => 'enabled' );
 
-            $OUT .= "other_args = \"-g /home/e-smith/files/docker -H unix:///var/run/docker.sock --bip=$local";
+            $OUT .= "other_args = \"-g /home/e-smith/files/docker -H unix:///var/run/docker.sock --bip=$dockerCIDR\n";
             $OUT .= "# Resolves: rhbz#1176302 (docker issue #407)\n";
             $OUT .= "DOCKER_NOWARN_KERNEL_VERSION=1\n";
         }
@@ -119,7 +120,7 @@
 # This will need setting most likely
 # DOCKER_CERT_PATH=/etc/docker
 
-Have seen some stuff like this
+# Have seen some stuff like this
 
     #if [ -z "${DOCKER_CERT_PATH}" ]; then
     #    DOCKER_CERT_PATH=/etc/docker
@@ -127,5 +128,5 @@ Have seen some stuff like this
 
     # Location used for temporary files, such as those created by
     # # docker load and build operations. Default is /var/lib/docker/tmp
-    # # Can be overriden by setting the following environment variable.
+    # # Can be overridden by setting the following environment variable.
     # # DOCKER_TMPDIR=/var/tmp
