@@ -13,12 +13,26 @@ So this remains here as a set of notes and ideas.
 
 The docker-io package creates the user and group 'dockerroot'
 
-These can be used in docker-compose or elsewhere if required.
+(now superceded by docker-engine)
 
+Docker keys
+
+docker=service
+    mask=24
+    network=172.16.0.0
+    status=enabled
+
+
+These can be used in docker-compose or elsewhere if required.
 
 Docker is easier to manage with docker-compose installed
 
-I have added that to the contrib rpm
+I have added that to the contrib rpm - currently compose version 
+
+docker-compose version 1.5.2, build 7240ff3
+
+If we update to the docker-engine 1.12.6 we can use the latest compose I believe - see end
+
 
 /home/e-smith/files/docker/configs
 
@@ -80,3 +94,14 @@ $dockerComposeVersion
 curl -L https://github.com/docker/compose/releases/download/$dockerComposeVersion/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 
 curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+
+
+https://docs.docker.com/compose/compose-file/compose-versioning
+
+We can probably use latest version now but for reference
+
+Compose file format - Docker Engine
+2.2	                   1.13.0+
+2.1	                   1.12.0+
+2.0	                   1.10.0+
+1.0	                   1.9.1.+
