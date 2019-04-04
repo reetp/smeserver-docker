@@ -5,7 +5,7 @@ my $event = "docker-update";
 
 # Demo code below
 
-## ipsec-update
+## docker-update templates to expand
 #
 foreach (qw(
        /etc/sysconfig/docker
@@ -28,9 +28,10 @@ foreach (qw(
 ## actions for docker-update event
 ##--------------------------------------------------
 #
-#event_link("docker-update", $event, "10");
+# ONLY if we have an actual actions script to do more
 #
-
+# event_link("docker-update", $event, "10");
+#
 
 ## Runlevel init links.
 service_link_enhanced("docker", "S95", "7");
@@ -38,10 +39,11 @@ service_link_enhanced("docker", "K21", "6");
 service_link_enhanced("docker", "K21", "0");
 service_link_enhanced("docker", "K21", "1");
 
-service_link_enhanced("rh-mongodb32-mongod", "S51", "7");
+# restart masq on docker-update
 
-#
-#safe_symlink("adjust", "root/etc/e-smith/events/$event/services2adjust/masq");
+safe_symlink("adjust", "root/etc/e-smith/events/$event/services2adjust/masq");
+
+# Old stuff left as a reminder
 #
 ## Set up generic logfile timestamp renaming/symlinking
 #

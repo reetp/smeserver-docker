@@ -1,6 +1,6 @@
 %define name smeserver-docker
 %define version 0.2
-%define release 4
+%define release 5
 Summary: Contrib to manage basic docker setup
 Name: %{name}
 Version: %{version}
@@ -16,7 +16,7 @@ BuildRoot: /var/tmp/%{name}-%{version}
 BuildArchitectures: noarch
 BuildRequires: e-smith-devtools
 Requires:  e-smith-release >= 9.2
-Requires:  docker-io >= 1.7.1
+Requires:  docker-engine >= 1.12
 Requires:  perl-Net-CIDR-Compare
 
 AutoReqProv: no
@@ -25,9 +25,16 @@ AutoReqProv: no
 Docker is an open-source project that automates the deployment of applications inside software containers
 
 %changelog
+
+* Thu Apr 04 2019 John Crisp <jcrisp@safeandsoundit.co.uk> 0.2-5
+- Fix update messages in 10defaults
+- Removed mongo32 service link which is in rocketchat
+- needs a rpm for perl-Net-Compare as sysconfig docker 10defaults needs it
+- changes requires to docker-engine 1.12
+
+
 * Fri Dec 21 2018 John Crisp <jcrisp@safeandsoundit.co.uk> 0.2-4
 - Fix stupid typos in 10 defaults
-- Not pushed yet
 
 * Fri Dec 21 2018 John Crisp <jcrisp@safeandsoundit.co.uk> 0.2-3
 - Fix error in spec file

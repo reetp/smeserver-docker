@@ -1,16 +1,11 @@
 {
     $OUT = "";
-    my $config = esmith::ConfigDB->open_ro or die("can't open Config DB");
-    my $net = $config->get_prop( 'docker', 'network' ) || 'noNet';
-    my $sub = $config->get_prop( 'docker', 'mask' )    || 'noSub';
-    my $local;
+    my $configDB = esmith::ConfigDB->open_ro or die("can't open Config DB");
+    # Get the docker network settings 
+    my $net = $configDB->get_prop( 'docker', 'network' ) || '172.16.0.0';
+    my $sub = $configDB->get_prop( 'docker', 'mask' )    || '24';
 
-    unless ( $net ne 'noNet' && $sub ne 'noSub' ) {
-        $local = "";
-    }
-    else {
-        $local = "${net}/${sub}";
-    }
+    my $local = "${net}/${sub}";
 
     # For testing
     # print "Help N $net S $sub L $local \n";
@@ -18,11 +13,12 @@
     # If the the docker network is set then  restrict it to the docker0
     # interface for local access
 
-    if ( ( $config->get_prop( 'docker', 'status' ) || 'disabled' ) && $local ne "" ) {
+    if ( ( $configDB->get_prop( 'docker', 'status' ) || 'disabled' ) eq 'enabled' ) {
 
         # For testing
-        print "Here \n";
+        # print "Here \n";
 
+        $OUT .= "# Docker settings";
         $OUT .= "/sbin/iptables -A \$NEW_local_chk -s $local";
         
         # Do we need the --in-interface docker?
@@ -33,6 +29,8 @@
     else {
         # For testing - else can be removed otherwise
         # print "Neither set\n";
+        $OUT .= "# Docker settings";
+        $OUT .= "# Docker disabled";        
     }
 
 }
