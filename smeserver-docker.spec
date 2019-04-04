@@ -17,7 +17,7 @@ BuildArchitectures: noarch
 BuildRequires: e-smith-devtools
 Requires:  e-smith-release >= 9.2
 Requires:  docker-engine >= 1.12
-Requires:  perl-Net-CIDR-Compare
+Requires:  perl-Net-CIDR >= 0.19
 
 AutoReqProv: no
 
