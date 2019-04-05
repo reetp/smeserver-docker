@@ -105,3 +105,9 @@ Compose file format - Docker Engine
 2.1	                   1.12.0+
 2.0	                   1.10.0+
 1.0	                   1.9.1.+
+
+
+/etc/docker/daemon.json
+
+https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-configuration-file
+

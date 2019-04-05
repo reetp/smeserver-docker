@@ -12,8 +12,8 @@
     use esmith::ConfigDB;
     use esmith::NetworksDB;
     use Net::CIDR ':all';
-    use Net::CIDR::Compare;
-    use Net::Netmask;
+    #use Net::CIDR::Compare;
+    #use Net::Netmask;
 
     my $configDB  = esmith::ConfigDB->open             or die("can't open Config DB");
     my $networksDB = esmith::ConfigDB->open('networks') or die("Docker Error - cant connect to networks database");
@@ -52,23 +52,24 @@
         if ($result) {
 
             # Case when there is some overlap
-            $OUT .= "Exiting due to network overlap\n";
+            $OUT .= "# Exiting due to network overlap\n";
             print "Exiting due to network overlap\n";
         }
         else {
             # Case when there is no overlap
             # Need to set it Docker enabled
             $networksDB->set_prop( $dockerNet, Docker => 'enabled' );
-            
+
             # Check if this tries to control iptables?
             # May need --iptables=false
-            $OUT .= "other_args = \"-g /home/e-smith/files/docker -H unix:///var/run/docker.sock --bip=$dockerCIDR\n";
+            $OUT .= "other_args = \"-g /home/e-smith/files/docker -H unix:///var/run/docker.sock --bip=$dockerCIDR\"\n";
+            $OUT .= "\n";
             $OUT .= "# Resolves: rhbz#1176302 (docker issue #407)\n";
             $OUT .= "DOCKER_NOWARN_KERNEL_VERSION=1\n";
         }
     }
     else {
-        $OUT .= "Docker is disabled\n";
+        $OUT .= "# Docker is disabled\n";
     }
 
     sub networkLookup {

@@ -1,6 +1,6 @@
 %define name smeserver-docker
 %define version 0.2
-%define release 5
+%define release 6
 Summary: Contrib to manage basic docker setup
 Name: %{name}
 Version: %{version}
@@ -16,7 +16,7 @@ BuildRoot: /var/tmp/%{name}-%{version}
 BuildArchitectures: noarch
 BuildRequires: e-smith-devtools
 Requires:  e-smith-release >= 9.2
-Requires:  docker-engine >= 1.12
+Requires:  docker-io >= 1.7
 Requires:  perl-Net-CIDR >= 0.19
 
 AutoReqProv: no
@@ -25,6 +25,10 @@ AutoReqProv: no
 Docker is an open-source project that automates the deployment of applications inside software containers
 
 %changelog
+* Fri Apr 05 2019 John Crisp <jcrisp@safeandsoundit.co.uk> 0.2-6
+- downgrade docker version as we can't run 1.12.x
+- status enabled by default to sort out templates
+- added /etc/docker/daemon.json for future - currently disabled
 
 * Thu Apr 04 2019 John Crisp <jcrisp@safeandsoundit.co.uk> 0.2-5
 - Fix update messages in 10defaults
@@ -108,7 +112,9 @@ fi
 
 echo "========================================================================"
 echo "see https://wiki.contribs.org/Docker"
+echo "config docker status affects the docker files
 echo "Note that docker is not daemonised so config docker status has no effect"
+
 echo "========================================================================"
 
 %postun
